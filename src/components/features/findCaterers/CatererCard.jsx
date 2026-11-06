@@ -1,9 +1,12 @@
 import React from 'react';
 import { Star, Navigation, Clock, Verified } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CatererCard = ({ caterer }) => {
+    const navigate = useNavigate();
+
     return (
-        <div className="bg-white border border-slate-200 rounded overflow-hidden hover:border-[#137EED]/40 hover:shadow-sm transition-all group flex flex-col">
+        <div onClick={() => navigate(`/caterer/${caterer._id || caterer.id}`)} className="cursor-pointer bg-white border border-slate-200 rounded overflow-hidden hover:border-[#137EED]/40 hover:shadow-sm transition-all group flex flex-col">
             <div className="relative h-40 w-full overflow-hidden bg-slate-100">
                 <img
                     alt={caterer.name}

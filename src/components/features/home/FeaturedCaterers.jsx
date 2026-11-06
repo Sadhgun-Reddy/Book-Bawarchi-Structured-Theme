@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronRight, Star, Utensils } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import api from '../../../services/api';
 
 const FeaturedCaterers = () => {
+    const navigate = useNavigate();
     const [catererData, setCatererData] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -61,7 +63,7 @@ const FeaturedCaterers = () => {
                             <p className="text-xs text-slate-600 line-clamp-2 mt-1 mb-3">{caterer.tags?.join(', ')}</p>
 
                             <div className="mt-auto pt-3 border-t border-slate-200">
-                                <button className="w-full py-2.5 text-sm font-bold text-[#137EED] bg-blue-50/50 hover:bg-blue-50 border border-blue-100/50 hover:border-blue-200 rounded transition-colors text-center">
+                                <button onClick={() => navigate(`/caterer/${caterer._id || caterer.id}`)} className="w-full py-2.5 text-sm font-bold text-[#137EED] bg-blue-50/50 hover:bg-blue-50 border border-blue-100/50 hover:border-blue-200 rounded transition-colors text-center">
                                     View Menu
                                 </button>
                             </div>

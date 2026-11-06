@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../../../store/authSlice';
 import api from '../../../services/api';
-import Header from '../../common/Header';
 
 const RegisterPage = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -30,8 +29,7 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col font-display">
-            <Header />
+        <div className="flex-1 bg-slate-50 flex flex-col font-display">
             <main className="flex-1 flex items-center justify-center p-4">
                 <div className="bg-white p-8 rounded-xl shadow-sm border border-slate-200 max-w-md w-full">
                     <h2 className="text-2xl font-bold text-slate-800 text-center mb-6">Create an Account</h2>
