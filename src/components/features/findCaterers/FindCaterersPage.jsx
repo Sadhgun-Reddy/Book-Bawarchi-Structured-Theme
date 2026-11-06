@@ -1,15 +1,17 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { MapPin, ChevronDown } from 'lucide-react';
 import Header from '../../common/Header';
 import FilterSidebar from './FilterSidebar';
 import SearchHeader from './SearchHeader';
 import CatererGrid from './CatererGrid';
-import { mockCaterers } from './mockData';
+import api from '../../../services/api';
 
 const FindCaterersPage = () => {
     // Top Bar State
     const [searchQuery, setSearchQuery] = useState("");
     const [sortBy, setSortBy] = useState("Recommended");
+    const [caterers, setCaterers] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     // Sidebar Filters State
     const [filters, setFilters] = useState({
@@ -20,31 +22,45 @@ const FindCaterersPage = () => {
         availabilityDate: ""
     });
 
+    useEffect(() => {
+        const fetchCaterers = async () => {
+            try {
+                const response = await api.get('/caterers');
+                setCaterers(response.data);
+            } catch (error) {
+                console.error("Error fetching caterers:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCaterers();
+    }, []);
+
     // Derived Results State: filtering and sorting
     const searchResults = useMemo(() => {
-        let results = [...mockCaterers];
+        let results = [...caterers];
 
         // 1. Search Query Filter
         if (searchQuery.trim()) {
             const lowerQuery = searchQuery.toLowerCase();
             results = results.filter(caterer =>
                 caterer.name.toLowerCase().includes(lowerQuery) ||
-                caterer.tags.some(tag => tag.toLowerCase().includes(lowerQuery)) ||
-                caterer.dietary.some(diet => diet.toLowerCase().includes(lowerQuery))
+                caterer.tags?.some(tag => tag.toLowerCase().includes(lowerQuery)) ||
+                caterer.dietary?.some(diet => diet.toLowerCase().includes(lowerQuery))
             );
         }
 
         // 2. Cuisine Filter
         if (filters.cuisines.length > 0) {
             results = results.filter(caterer =>
-                caterer.tags.some(tag => filters.cuisines.includes(tag))
+                caterer.tags?.some(tag => filters.cuisines.includes(tag))
             );
         }
 
         // 3. Service Style Filter
         if (filters.serviceStyles.length > 0) {
             results = results.filter(caterer =>
-                caterer.tags.some(tag => filters.serviceStyles.includes(tag))
+                caterer.tags?.some(tag => filters.serviceStyles.includes(tag))
             );
         }
 
@@ -52,7 +68,7 @@ const FindCaterersPage = () => {
         if (filters.dietary.length > 0) {
             // Caterer must meet ALL selected dietary requirements for strict adherence
             results = results.filter(caterer =>
-                filters.dietary.every(req => caterer.dietary.includes(req))
+                filters.dietary.every(req => caterer.dietary?.includes(req))
             );
         }
 
@@ -90,7 +106,7 @@ const FindCaterersPage = () => {
         }
 
         return results;
-    }, [filters, searchQuery, sortBy]);
+    }, [filters, searchQuery, sortBy, caterers]);
 
     return (
         <div className="bg-slate-50 min-h-screen flex flex-col font-display overflow-hidden text-slate-900">
@@ -121,7 +137,11 @@ const FindCaterersPage = () => {
                         sortBy={sortBy}
                         setSortBy={setSortBy}
                     />
-                    <CatererGrid data={searchResults} />
+                    {loading ? (
+                        <div className="p-8 text-center text-slate-500">Loading caterers...</div>
+                    ) : (
+                        <CatererGrid data={searchResults} />
+                    )}
                 </main>
             </div>
         </div>
