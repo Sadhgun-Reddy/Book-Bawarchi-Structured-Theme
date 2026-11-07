@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { MapPin, ChevronDown } from 'lucide-react';
-import Header from '../../common/Header';
 import FilterSidebar from './FilterSidebar';
 import SearchHeader from './SearchHeader';
 import CatererGrid from './CatererGrid';
@@ -109,10 +108,9 @@ const FindCaterersPage = () => {
     }, [filters, searchQuery, sortBy, caterers]);
 
     return (
-        <div className="bg-slate-50 min-h-screen flex flex-col font-display overflow-hidden text-slate-900">
+        <div className="bg-slate-50 flex flex-col font-display overflow-hidden text-slate-900 flex-1">
             {/* Extended Header to match the HTML layout top section layout */}
             <div className="bg-white border-b border-slate-200">
-                <Header />
                 <div className="bg-slate-50 border-t border-slate-200 px-6 py-2 flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2">
                         <span className="font-bold text-slate-800">Catering Search</span>
