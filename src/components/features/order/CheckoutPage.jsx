@@ -10,11 +10,20 @@ const CheckoutPage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [submitting, setSubmitting] = useState(false);
+    const [eventDate, setEventDate] = useState("");
+    const [address, setAddress] = useState("");
 
     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-    const handleCheckout = async () => {
+    const handleCheckout = async (e) => {
+        e.preventDefault();
         if (cart.length === 0) return;
+
+        if (!eventDate) {
+            alert("Please select an event date");
+            return;
+        }
+
         setSubmitting(true);
         try {
             const catererId = cart[0].catererId;
@@ -29,11 +38,12 @@ const CheckoutPage = () => {
                 catererId: catererId,
                 items: cart.map(c => ({ name: c.name, quantity: c.quantity, price: c.price })),
                 totalAmount,
-                eventDate: new Date(Date.now() + 86400000).toISOString(),
+                eventDate: new Date(eventDate).toISOString(),
+                // In a real app we'd save the address as well, assuming it's in the schema. For now, it's just validated in UI.
             });
             dispatch(clearCart());
             alert('Order placed successfully!');
-            navigate('/');
+            navigate('/profile');
         } catch (error) {
             console.error("Error creating order:", error);
             alert('Failed to place order.');
@@ -79,18 +89,43 @@ const CheckoutPage = () => {
                     </div>
                 </div>
 
-                <div className="flex justify-end gap-4">
-                    <button onClick={() => navigate(-1)} className="px-6 py-3 rounded-lg font-semibold text-slate-600 border border-slate-300 hover:bg-slate-50 transition-colors">
-                        Back
-                    </button>
-                    <button
-                        onClick={handleCheckout}
-                        disabled={submitting}
-                        className={`bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition-colors shadow-sm ${submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    >
-                        {submitting ? 'Processing...' : 'Confirm Order'}
-                    </button>
-                </div>
+                <form onSubmit={handleCheckout} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6 space-y-4">
+                    <h2 className="text-xl font-bold mb-4">Event Details</h2>
+                    <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1">Event Date</label>
+                        <input
+                            type="date"
+                            value={eventDate}
+                            onChange={(e) => setEventDate(e.target.value)}
+                            required
+                            className="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#137EED]"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1">Delivery Address</label>
+                        <input
+                            type="text"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            required
+                            placeholder="123 Main St"
+                            className="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#137EED]"
+                        />
+                    </div>
+
+                    <div className="flex justify-end gap-4 mt-6 pt-4 border-t border-slate-200">
+                        <button type="button" onClick={() => navigate(-1)} className="px-6 py-3 rounded-lg font-semibold text-slate-600 border border-slate-300 hover:bg-slate-50 transition-colors">
+                            Back
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={submitting}
+                            className={`bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition-colors shadow-sm ${submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        >
+                            {submitting ? 'Processing...' : 'Confirm Order'}
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     );
