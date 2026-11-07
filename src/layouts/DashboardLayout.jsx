@@ -1,12 +1,20 @@
 import React from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleSidebar } from '../store/uiSlice';
-import { Menu, User, Settings, ShoppingCart, Home, ListOrdered, FileText } from 'lucide-react';
+import { logout } from '../store/authSlice';
+import { Menu, User, Settings, ShoppingCart, Home, ListOrdered, FileText, LogOut } from 'lucide-react';
 
 const DashboardLayout = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const sidebarOpen = useSelector((state) => state.ui.sidebarOpen);
+    const { user } = useSelector((state) => state.auth);
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/');
+    };
 
     const navLinkClass = ({ isActive }) =>
         `flex items-center gap-2 px-2 py-1.5 text-sm rounded transition-colors ${
@@ -52,12 +60,13 @@ const DashboardLayout = () => {
                     </button>
 
                     <div className="flex items-center gap-3">
-                        <button className="p-1.5 rounded border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors">
+                        <span className="text-sm font-semibold text-slate-600 mr-2">{user?.email}</span>
+                        <button className="p-1.5 rounded border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors" title="Settings">
                             <Settings size={18} strokeWidth={2} />
                         </button>
-                        <div className="h-8 w-8 rounded-full border border-slate-200 bg-slate-100 flex items-center justify-center text-slate-600">
-                            <User size={16} strokeWidth={2} />
-                        </div>
+                        <button onClick={handleLogout} className="p-1.5 rounded border border-slate-200 hover:bg-red-50 text-red-600 transition-colors" title="Logout">
+                            <LogOut size={18} strokeWidth={2} />
+                        </button>
                     </div>
                 </header>
 

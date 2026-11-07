@@ -8,8 +8,10 @@ import LoginPage from './components/features/auth/LoginPage';
 import RegisterPage from './components/features/auth/RegisterPage';
 import Dashboard from './components/features/admin/Dashboard';
 import Inventory from './components/features/admin/Inventory';
+import MenuManager from './components/features/admin/MenuManager';
 import CatererDetailsPage from './components/features/order/CatererDetailsPage';
 import CheckoutPage from './components/features/order/CheckoutPage';
+import UserDashboard from './components/features/user/UserDashboard';
 import Users from './components/features/admin/Users';
 import Orders from './components/features/admin/Orders';
 import Reports from './components/features/admin/Reports';
@@ -38,6 +40,7 @@ const AppRoutes = () => {
                     <Route path="/caterer/:id" element={<CatererDetailsPage />} />
                     <Route element={<ProtectedRoute requireAdmin={false} />}>
                         <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/profile" element={<UserDashboard />} />
                     </Route>
                 </Route>
 
@@ -46,10 +49,10 @@ const AppRoutes = () => {
                     <Route path="/dashboard" element={<DashboardLayout />}>
                         <Route index element={<Dashboard />} />
                         <Route path="inventory" element={<Inventory />} />
+                        <Route path="inventory/:catererId/menu" element={<MenuManager />} />
                         <Route path="users" element={<Users />} />
                         <Route path="orders" element={<Orders />} />
                         <Route path="reports" element={<Reports />} />
-                        {/* Add remaining 25 admin routes here in future */}
                     </Route>
                 </Route>
 
