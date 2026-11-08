@@ -15,13 +15,19 @@ import Orders from './components/features/admin/Orders';
 import Reports from './components/features/admin/Reports';
 import ProtectedRoute from './components/common/ProtectedRoute';
 
+import Potluck from './components/features/home/Potluck';
+import Support from './components/features/home/Support';
+import About from './components/features/home/About';
+import Contact from './components/features/home/Contact';
+
+// User features
+// UserOrders will be lazy loaded or imported later based on the next step
+
 // Placeholder Components utilizing lazy
 const LoadingFallback = () => <div className="p-4">Loading...</div>;
 
-// Public Pages (Frontend - Placeholder for 31 Routes)
-const About = lazy(() => Promise.resolve({ default: () => <div>About</div> }));
-const Contact = lazy(() => Promise.resolve({ default: () => <div>Contact</div> }));
-// ... Remaining 26 Public Routes Placeholder
+// In next step, we'll replace this lazy with an actual component.
+const UserOrders = lazy(() => import('./components/features/order/UserOrders'));
 
 const AppRoutes = () => {
     return (
@@ -33,11 +39,15 @@ const AppRoutes = () => {
                     <Route path="/find" element={<FindCaterersPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/potluck" element={<Potluck />} />
+                    <Route path="/support" element={<Support />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/caterer/:id" element={<CatererDetailsPage />} />
+
                     <Route element={<ProtectedRoute requireAdmin={false} />}>
                         <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/my-orders" element={<UserOrders />} />
                     </Route>
                 </Route>
 
@@ -49,7 +59,6 @@ const AppRoutes = () => {
                         <Route path="users" element={<Users />} />
                         <Route path="orders" element={<Orders />} />
                         <Route path="reports" element={<Reports />} />
-                        {/* Add remaining 25 admin routes here in future */}
                     </Route>
                 </Route>
 
