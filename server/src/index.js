@@ -15,7 +15,8 @@ app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/caterers', require('./routes/caterers.routes'));
 app.use('/api/users', require('./routes/users.routes'));
 app.use('/api/orders', require('./routes/orders.routes'));
-app.use('/api/menu', require('./routes/menu.routes')); // Added menu routes
+app.use('/api/menu', require('./routes/menu.routes'));
+app.use('/api/admin', require('./routes/admin.routes')); // Added admin routes
 
 app.get('/', (req, res) => {
   res.send('API is running');
