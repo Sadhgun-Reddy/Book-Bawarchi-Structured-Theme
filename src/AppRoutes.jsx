@@ -10,6 +10,8 @@ import Dashboard from './components/features/admin/Dashboard';
 import Inventory from './components/features/admin/Inventory';
 import CatererDetailsPage from './components/features/order/CatererDetailsPage';
 import CheckoutPage from './components/features/order/CheckoutPage';
+import UserOrders from './components/features/order/UserOrders';
+import Profile from './components/features/user/Profile';
 import Users from './components/features/admin/Users';
 import Orders from './components/features/admin/Orders';
 import Reports from './components/features/admin/Reports';
@@ -38,6 +40,8 @@ const AppRoutes = () => {
                     <Route path="/caterer/:id" element={<CatererDetailsPage />} />
                     <Route element={<ProtectedRoute requireAdmin={false} />}>
                         <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/my-orders" element={<UserOrders />} />
                     </Route>
                 </Route>
 
