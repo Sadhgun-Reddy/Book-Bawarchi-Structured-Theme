@@ -10,6 +10,7 @@ import Dashboard from './components/features/admin/Dashboard';
 import Inventory from './components/features/admin/Inventory';
 import CatererDetailsPage from './components/features/order/CatererDetailsPage';
 import CheckoutPage from './components/features/order/CheckoutPage';
+import MyOrdersPage from './components/features/order/MyOrdersPage';
 import Users from './components/features/admin/Users';
 import Orders from './components/features/admin/Orders';
 import Reports from './components/features/admin/Reports';
@@ -31,13 +32,14 @@ const AppRoutes = () => {
                 <Route element={<MainLayout />}>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/find" element={<FindCaterersPage />} />
-                    <Route path="/login" element={<LoginPage />} />
+                                                            <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/caterer/:id" element={<CatererDetailsPage />} />
                     <Route element={<ProtectedRoute requireAdmin={false} />}>
                         <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/my-orders" element={<MyOrdersPage />} />
                     </Route>
                 </Route>
 

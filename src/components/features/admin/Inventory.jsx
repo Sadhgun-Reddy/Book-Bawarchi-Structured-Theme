@@ -1,32 +1,74 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../../services/api';
+import CatererModal from './CatererModal';
 
 const Inventory = () => {
     const [caterers, setCaterers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingCaterer, setEditingCaterer] = useState(null);
+
+    const fetchCaterers = async () => {
+        setLoading(true);
+        try {
+            const response = await api.get('/caterers');
+            setCaterers(response.data);
+        } catch (error) {
+            console.error("Error fetching caterers:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchCaterers = async () => {
-            try {
-                const response = await api.get('/caterers');
-                setCaterers(response.data);
-            } catch (error) {
-                console.error("Error fetching caterers:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchCaterers();
     }, []);
+
+    const handleSave = async (data) => {
+        try {
+            if (editingCaterer) {
+                await api.put(`/caterers/${editingCaterer._id}`, data);
+            } else {
+                await api.post('/caterers', data);
+            }
+            fetchCaterers();
+        } catch (error) {
+            console.error("Error saving caterer:", error);
+            alert("Failed to save caterer.");
+        }
+    };
+
+    const handleDelete = async (id) => {
+        if (window.confirm("Are you sure you want to delete this caterer?")) {
+            try {
+                await api.delete(`/caterers/${id}`);
+                fetchCaterers();
+            } catch (error) {
+                console.error("Error deleting caterer:", error);
+                alert("Failed to delete caterer.");
+            }
+        }
+    };
+
+    const openAddModal = () => {
+        setEditingCaterer(null);
+        setIsModalOpen(true);
+    };
+
+    const openEditModal = (caterer) => {
+        setEditingCaterer(caterer);
+        setIsModalOpen(true);
+    };
 
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold text-slate-800">Caterer Management</h1>
-                <button className="bg-[#137EED] text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-blue-600 transition-colors">
+                <button onClick={openAddModal} className="bg-[#137EED] text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-blue-600 transition-colors">
                     Add Caterer
                 </button>
             </div>
+
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                 {loading ? (
                     <div className="p-8 text-center text-slate-500">Loading caterers...</div>
@@ -40,6 +82,7 @@ const Inventory = () => {
                                     <th className="p-4 font-semibold">Rating</th>
                                     <th className="p-4 font-semibold">Distance</th>
                                     <th className="p-4 font-semibold">Top Rated</th>
+                                    <th className="p-4 font-semibold text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,6 +93,10 @@ const Inventory = () => {
                                         <td className="p-4 text-sm text-slate-800">{caterer.rating}</td>
                                         <td className="p-4 text-sm text-slate-600">{caterer.distance} mi</td>
                                         <td className="p-4 text-sm text-slate-600">{caterer.isTopRated ? 'Yes' : 'No'}</td>
+                                        <td className="p-4 text-sm text-right">
+                                            <button onClick={() => openEditModal(caterer)} className="text-[#137EED] hover:underline mr-3 font-semibold">Edit</button>
+                                            <button onClick={() => handleDelete(caterer._id)} className="text-red-500 hover:underline font-semibold">Delete</button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -57,6 +104,13 @@ const Inventory = () => {
                     </div>
                 )}
             </div>
+
+            <CatererModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                caterer={editingCaterer}
+                onSave={handleSave}
+            />
         </div>
     );
 };

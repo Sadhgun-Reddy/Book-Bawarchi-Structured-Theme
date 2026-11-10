@@ -2,9 +2,9 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const generateTokens = (userId) => {
-  const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '15m' });
-  const refreshToken = jwt.sign({ id: userId }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+const generateTokens = (userId, role) => {
+  const token = jwt.sign({ id: userId, role }, process.env.JWT_SECRET, { expiresIn: '15m' });
+  const refreshToken = jwt.sign({ id: userId, role }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
   return { token, refreshToken };
 };
 
@@ -20,7 +20,7 @@ exports.register = async (req, res) => {
     user = new User({ email, password: hashedPassword, role });
     await user.save();
 
-    const { token, refreshToken } = generateTokens(user._id);
+    const { token, refreshToken } = generateTokens(user._id, user.role);
     res.status(201).json({ token, refreshToken, user: { id: user._id, email: user.email, role: user.role } });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -38,7 +38,7 @@ exports.login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
-    const { token, refreshToken } = generateTokens(user._id);
+    const { token, refreshToken } = generateTokens(user._id, user.role);
     res.json({ token, refreshToken, user: { id: user._id, email: user.email, role: user.role } });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -52,7 +52,7 @@ exports.refresh = async (req, res) => {
       return res.status(401).json({ message: 'No refresh token provided' });
     }
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-    const { token, refreshToken: newRefreshToken } = generateTokens(decoded.id);
+    const { token, refreshToken: newRefreshToken } = generateTokens(decoded.id, decoded.role);
     res.json({ token, refreshToken: newRefreshToken });
   } catch (error) {
     res.status(401).json({ message: 'Invalid refresh token' });
