@@ -2,9 +2,12 @@ import React from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleSidebar } from '../store/uiSlice';
+import { logout } from '../store/authSlice';
+import { useNavigate } from 'react-router-dom';
 import { Menu, User, Settings, ShoppingCart, Home, ListOrdered, FileText } from 'lucide-react';
 
 const DashboardLayout = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const sidebarOpen = useSelector((state) => state.ui.sidebarOpen);
 
@@ -55,9 +58,20 @@ const DashboardLayout = () => {
                         <button className="p-1.5 rounded border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors">
                             <Settings size={18} strokeWidth={2} />
                         </button>
+
                         <div className="h-8 w-8 rounded-full border border-slate-200 bg-slate-100 flex items-center justify-center text-slate-600">
                             <User size={16} strokeWidth={2} />
                         </div>
+                        <button
+                            onClick={() => {
+                                dispatch(logout());
+                                navigate('/');
+                            }}
+                            className="px-3 py-1.5 text-xs font-bold text-white bg-red-500 hover:bg-red-600 rounded transition-colors shadow-sm ml-2"
+                        >
+                            Logout
+                        </button>
+
                     </div>
                 </header>
 

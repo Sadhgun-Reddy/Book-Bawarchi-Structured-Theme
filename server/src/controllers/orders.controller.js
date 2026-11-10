@@ -12,7 +12,6 @@ exports.createOrder = async (req, res) => {
 
 exports.getOrders = async (req, res) => {
   try {
-    // If admin, return all orders. If user, return only their orders.
     const query = req.user.role === 'admin' ? {} : { userId: req.user.id };
     const orders = await Order.find(query).populate('catererId', 'name').populate('userId', 'email');
     res.json(orders);
