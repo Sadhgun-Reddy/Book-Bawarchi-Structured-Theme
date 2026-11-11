@@ -10,10 +10,13 @@ import Dashboard from './components/features/admin/Dashboard';
 import Inventory from './components/features/admin/Inventory';
 import CatererDetailsPage from './components/features/order/CatererDetailsPage';
 import CheckoutPage from './components/features/order/CheckoutPage';
+import MyOrdersPage from './components/features/order/MyOrdersPage';
 import Users from './components/features/admin/Users';
 import Orders from './components/features/admin/Orders';
 import Reports from './components/features/admin/Reports';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import PotluckPage from './components/features/home/PotluckPage';
+import SupportPage from './components/features/home/SupportPage';
 
 // Placeholder Components utilizing lazy
 const LoadingFallback = () => <div className="p-4">Loading...</div>;
@@ -35,9 +38,12 @@ const AppRoutes = () => {
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/potluck" element={<PotluckPage />} />
+                    <Route path="/support" element={<SupportPage />} />
                     <Route path="/caterer/:id" element={<CatererDetailsPage />} />
                     <Route element={<ProtectedRoute requireAdmin={false} />}>
                         <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/my-orders" element={<MyOrdersPage />} />
                     </Route>
                 </Route>
 

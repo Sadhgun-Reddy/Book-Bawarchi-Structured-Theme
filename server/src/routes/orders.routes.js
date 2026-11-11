@@ -5,6 +5,7 @@ const { verifyToken, isAdmin } = require('../middlewares/auth.middleware');
 
 router.post('/', verifyToken, ordersController.createOrder);
 router.get('/', verifyToken, ordersController.getOrders);
+router.get('/stats/dashboard', verifyToken, isAdmin, ordersController.getStats);
 router.put('/:id/status', verifyToken, isAdmin, ordersController.updateOrderStatus);
 
 module.exports = router;

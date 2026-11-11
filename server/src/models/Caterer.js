@@ -24,6 +24,10 @@ const catererSchema = new mongoose.Schema({
   priceValue: {
     type: Number,
   },
+  minPlates: {
+    type: Number,
+    default: 10,
+  },
   distance: {
     type: Number,
   },
@@ -32,6 +36,9 @@ const catererSchema = new mongoose.Schema({
     default: false,
   },
   dateCode: {
+    type: String,
+  },
+  image: {
     type: String,
   }
 }, { timestamps: true });
