@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const User = require('../models/User');
 
 exports.createOrder = async (req, res) => {
   try {
@@ -34,5 +35,27 @@ exports.updateOrderStatus = async (req, res) => {
     res.json(updatedOrder);
   } catch (error) {
     res.status(400).json({ message: 'Error updating order', error: error.message });
+  }
+};
+
+exports.getStats = async (req, res) => {
+  try {
+    const totalOrders = await Order.countDocuments();
+
+    const revenueAgg = await Order.aggregate([
+      { $match: { status: { $in: ['confirmed', 'completed'] } } },
+      { $group: { _id: null, totalRevenue: { $sum: '$totalAmount' } } }
+    ]);
+    const totalRevenue = revenueAgg.length > 0 ? revenueAgg[0].totalRevenue : 0;
+
+    const activeUsers = await User.countDocuments(); // Simple count for mock logic
+
+    res.json({
+      totalOrders,
+      totalRevenue,
+      activeUsers
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching stats', error: error.message });
   }
 };

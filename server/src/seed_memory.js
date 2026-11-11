@@ -13,7 +13,9 @@ const mockCaterers = [
         distance: 2.4,
         tags: ["North Indian", "Mughlai", "Buffet"],
         dietary: ["Vegetarian"],
-        isTopRated: false
+        isTopRated: false,
+        image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?q=80&w=600&auto=format&fit=crop",
+        minPlates: 20
     },
     {
         name: "Green Leaf Catering",
@@ -23,7 +25,9 @@ const mockCaterers = [
         distance: 5.1,
         tags: ["Vegan", "Healthy", "Drop-off / Boxed"],
         dietary: ["Vegan", "Gluten-Free", "Vegetarian"],
-        isTopRated: false
+        isTopRated: false,
+        image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=600&auto=format&fit=crop",
+        minPlates: 10
     },
     {
         name: "Royal Feast Events",
@@ -33,7 +37,9 @@ const mockCaterers = [
         distance: 8.3,
         tags: ["Continental", "Plated Sit-down", "Wedding"],
         dietary: ["Halal"],
-        isTopRated: true
+        isTopRated: true,
+        image: "https://images.unsplash.com/photo-1555244162-803834f70033?q=80&w=600&auto=format&fit=crop",
+        minPlates: 50
     },
     {
         name: "Golden Dragon",
@@ -43,7 +49,9 @@ const mockCaterers = [
         distance: 1.2,
         tags: ["Chinese", "Asian", "Buffet"],
         dietary: [],
-        isTopRated: false
+        isTopRated: false,
+        image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=600&auto=format&fit=crop",
+        minPlates: 15
     },
     {
         name: "Taco Fiesta",
@@ -53,7 +61,9 @@ const mockCaterers = [
         distance: 3.0,
         tags: ["Mexican", "Street Food", "Live Station", "Buffet"],
         dietary: ["Gluten-Free"],
-        isTopRated: false
+        isTopRated: false,
+        image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?q=80&w=600&auto=format&fit=crop",
+        minPlates: 25
     },
     {
         name: "Mama Mia Catering",
@@ -63,7 +73,9 @@ const mockCaterers = [
         distance: 6.5,
         tags: ["Italian", "Pizza/Pasta", "Drop-off / Boxed"],
         dietary: ["Vegetarian"],
-        isTopRated: false
+        isTopRated: false,
+        image: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?q=80&w=600&auto=format&fit=crop",
+        minPlates: 20
     },
     {
         name: "Curry House",
@@ -73,7 +85,9 @@ const mockCaterers = [
         distance: 0.8,
         tags: ["South Indian", "Thali", "Veg Only", "Buffet"],
         dietary: ["Vegetarian", "Vegan"],
-        isTopRated: false
+        isTopRated: false,
+        image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=600&auto=format&fit=crop",
+        minPlates: 10
     },
     {
         name: "Sweet Delights",
@@ -83,7 +97,9 @@ const mockCaterers = [
         distance: 4.2,
         tags: ["Bakery", "Dessert", "Drop-off / Boxed"],
         dietary: ["Vegetarian"],
-        isTopRated: true
+        isTopRated: true,
+        image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=600&auto=format&fit=crop",
+        minPlates: 30
     }
 ];
 

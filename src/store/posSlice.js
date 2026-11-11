@@ -10,6 +10,12 @@ const posSlice = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action) => {
+            // Check if cart has items from a different caterer
+            if (state.cart.length > 0 && state.cart[0].catererId !== action.payload.catererId) {
+                // Clear the cart if a different caterer is selected
+                state.cart = [];
+            }
+
             const existingItem = state.cart.find(item => item.id === action.payload.id);
             if (existingItem) {
                 existingItem.quantity += action.payload.quantity || 1;
